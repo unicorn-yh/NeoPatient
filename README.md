@@ -29,7 +29,7 @@ Note also that we use PEFT library as backend for LoRA training, make sure to ha
 
 With `gradient_checkpointing` and `mixed_precision` it should be possible to fine tune the model on a single 24GB GPU. For higher `batch_size` and faster training it's better to use GPUs with >30GB memory.
 
-***Note: Change the hyperparameters in the `run.sh` based on your own requirements.***
+***Note: Change the hyperparameters in the*** `run.sh` ***based on your own requirements.***
 
 ```sh
 #!/bin/bash
