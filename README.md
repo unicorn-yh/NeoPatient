@@ -60,7 +60,7 @@ CHECKPOINTING_STEPS=5000
 
 Once the training is finished the model will be saved in the `output_dir` specified in the command. 
 
-
+<br>
 
 ###  Training with multiple GPUs
 
