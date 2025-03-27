@@ -90,6 +90,12 @@ accelerate launch --multi_gpu python lora_train.py \
   --validation_dir $VALIDATION_DIR 
 ```
 
+<br>
+
+## Dataset
+
+The dataset was organized in `dataset`, where the `images` folder in the path contains the training  images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
+
 
 
 
