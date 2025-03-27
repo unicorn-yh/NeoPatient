@@ -5,7 +5,7 @@ The `lora_train.py` script shows how to fine-tune stable diffusion model using L
 
 ## Running locally with PyTorch
 
-Download **Stable Diffusion v2.1** from Hugging Face: **[[Stable-Diffusion-2-1]](https://huggingface.co/stabilityai/stable-diffusion-2-1)**
+Download **Stable Diffusion v2.1** from Hugging Face: **[Stable-Diffusion-2-1](https://huggingface.co/stabilityai/stable-diffusion-2-1)**
 
 Before running the scripts, make sure to install the library's training dependencies:
 
