@@ -6,7 +6,12 @@
 </div>
 
 
+## Dataset
 
+Download the preprocessed ROCO dataset from [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/c10a6bfc0fb74fd28cbd/), and put the dataset in `./dataset`, where the `./dataset/train/images` folder in the path contains the training images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
+Train set contains 65420 images, test set contains 8176 images, and validation set contains 8172 images.
+
+<br>
 
 The `lora_train.py` script shows how to fine-tune stable diffusion model using LoRA on your own dataset.
 
@@ -100,11 +105,6 @@ accelerate launch --multi_gpu python lora_train.py \
 ```
 
 <br>
-
-## Dataset
-
-Download the preprocessed ROCO dataset from [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/c10a6bfc0fb74fd28cbd/), and put the dataset in `./dataset`, where the `./dataset/train/images` folder in the path contains the training images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
-Train set contains 65420 images, test set contains 8176 images, and validation set contains 8172 images.
 
 
 
