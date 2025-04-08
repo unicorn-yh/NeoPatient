@@ -47,16 +47,16 @@ With `gradient_checkpointing` and `mixed_precision` it should be possible to fin
 #!/bin/bash
 
 # Arguments for the fine-tuning script
-LORA_RANK=128  # Rank for LoRA configuration
+LORA_RANK=32  # Rank for LoRA configuration
 PRETRAINED_MODEL_PATH="../stable-diffusion-2-1" # Path to the pretrained model
-TRAIN_DATA_DIR="../dataset/nobel" # Path to the dataset directory
+TRAIN_DATA_DIR="../dataset/train" # Path to the dataset directory
 OUTPUT_DIR="../output/fine_tuned_model_$LORA_RANK" # Directory to save the fine-tuned model
 LOG_DIR="../log/train_$LORA_RANK.log"
 VALIDATION_DIR="../test/figure/nobel_$LORA_RANK"
 IMAGE_COLUMN="image" # Column name for image filenames in metadata
 CAPTION_COLUMN="text" # Column name for captions in metadata
 BATCH_SIZE=1 # Training batch size
-NUM_EPOCHS=60 # Number of training epochs
+NUM_EPOCHS=5 # Number of training epochs
 LEARNING_RATE=1e-4 # Learning rate for the optimizer
 LR_SCHEDULER="constant" # Type of learning rate scheduler
 LR_WARMUP_STEPS=0 # Warmup steps for the learning rate
@@ -65,7 +65,7 @@ SEED=42 # Random seed for reproducibility
 VALIDATION_PROMPT="Abdominal CT scan shows a dilated appendix measuring 9mm in diameter, with surrounding fat stranding indicative of acute appendicitis."
 MIXED_PRECISION="fp16"
 NUM_VALIDATION_IMAGES=1
-CHECKPOINTING_STEPS=5000
+CHECKPOINTING_STEPS=1000
 ```
 
 
