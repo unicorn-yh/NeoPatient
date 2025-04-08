@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="figure/NeoPatient.png" width="300em" ></img>
+  <img src="figure/NeoPatient.png" width="400em" ></img>
   <p align="center">
     <strong>Multimodal EHR Synthesis for Virtual Patients Using Medical Text-to-Image Generation</strong>
   </p>
