@@ -13,13 +13,11 @@ Train set contains 65420 images, test set contains 8176 images, and validation s
 
 <br>
 
-The `lora_train.py` script shows how to fine-tune stable diffusion model using LoRA on your own dataset.
-
-<br>
-
 ## Running locally with PyTorch
 
 Download **Stable Diffusion v2.1** from Hugging Face: **[Stable-Diffusion-2-1](https://huggingface.co/stabilityai/stable-diffusion-2-1)**
+
+The `lora_train.py` script shows how to fine-tune stable diffusion model using LoRA on your own dataset.
 
 Before running the scripts, make sure to install the library's training dependencies:
 
