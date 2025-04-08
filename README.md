@@ -1,6 +1,13 @@
-# NeoPatient
 
-***Multimodal EHR Synthesis for Virtual Patients Using Medical Text-to-Image Generation***
+<div align="center">
+
+<img src="./figure/NeoPatient.jpg" width="300em" ></img> 
+
+**Multimodal EHR Synthesis for Virtual Patients Using Medical Text-to-Image Generation**
+
+
+</div>
+
 
 The `lora_train.py` script shows how to fine-tune stable diffusion model using LoRA on your own dataset.
 
