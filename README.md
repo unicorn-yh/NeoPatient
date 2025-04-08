@@ -104,13 +104,7 @@ accelerate launch --multi_gpu python lora_train.py \
 ## Dataset
 
 The dataset was organized in [`./dataset`](https://github.com/unicorn-yh/NeoPatient/tree/main/dataset), where the [`train/images`](https://github.com/unicorn-yh/NeoPatient/tree/main/dataset/train/images) folder in the path contains the training  images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
-
-
-TRAIN DATASIZE = 65420
-
-TEST DATASIZE = 8176
-
-VALIDATION DATASIZE = 8172
+Train set contains 65420 images, test set contains 8176 images, and validation set contains 8172 images.
 
 
 
