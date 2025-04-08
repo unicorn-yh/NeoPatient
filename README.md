@@ -59,7 +59,7 @@ LR_SCHEDULER="constant" # Type of learning rate scheduler
 LR_WARMUP_STEPS=0 # Warmup steps for the learning rate
 RESOLUTION=512 # Resolution for the input images
 SEED=42 # Random seed for reproducibility
-VALIDATION_PROMPT="Jack Ma wearing a baseball cap, with a serious expression, and a simple necklace, in the style of Nobel Laureate."
+VALIDATION_PROMPT="Abdominal CT scan shows a dilated appendix measuring 9mm in diameter, with surrounding fat stranding indicative of acute appendicitis."
 MIXED_PRECISION="fp16"
 NUM_VALIDATION_IMAGES=1
 CHECKPOINTING_STEPS=5000
@@ -103,11 +103,14 @@ accelerate launch --multi_gpu python lora_train.py \
 
 ## Dataset
 
-The dataset was organized in `dataset`, where the `images` folder in the path contains the training  images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
+The dataset was organized in [`./dataset`](https://github.com/unicorn-yh/NeoPatient/tree/main/dataset), where the [`train/images`](https://github.com/unicorn-yh/NeoPatient/tree/main/dataset/train/images) folder in the path contains the training  images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
 
 
+TRAIN DATASIZE = 65420
 
+TEST DATASIZE = 8176
 
+VALIDATION DATASIZE = 8172
 
 
 
