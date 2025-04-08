@@ -19,7 +19,7 @@ Download **Stable Diffusion v2.1** from Hugging Face: **[Stable-Diffusion-2-1](h
 Before running the scripts, make sure to install the library's training dependencies:
 
 ```bash
-git clone https://github.com/unicorn-yh/Medical-Image-Generation
+git clone https://github.com/unicorn-yh/NeoPatient
 cd train
 pip install -r requirements.txt
 ```
