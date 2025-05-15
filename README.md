@@ -60,7 +60,7 @@ With `gradient_checkpointing` and `mixed_precision` it should be possible to fin
 
 # Arguments for the fine-tuning script
 LORA_RANK=8  # Rank for LoRA configuration
-DATA_SIZE=100 # Training data size
+DATA_SIZE=8000 # Training data size
 PRETRAINED_MODEL_PATH="/disks/disk5/private/liyonghui/stable-diffusion-2-1" # Path to the pretrained model
 TRAIN_DATA_DIR="../dataset/train" # Path to the dataset directory
 OUTPUT_DIR="../output/finetuned_model_rank$LORA_RANK" # Directory to save the fine-tuned model
@@ -78,7 +78,7 @@ SEED=42 # Random seed for reproducibility
 VALIDATION_PROMPT="Abdominal CT scan shows a dilated appendix measuring 9mm in diameter, with surrounding fat stranding indicative of acute appendicitis."
 MIXED_PRECISION="fp16"
 NUM_VALIDATION_IMAGES=1
-CHECKPOINTING_STEPS=1000
+CHECKPOINTING_STEPS=5000
 ```
 
 
