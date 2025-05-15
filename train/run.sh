@@ -1,25 +1,26 @@
 #!/bin/bash
 
 # Arguments for the fine-tuning script
-LORA_RANK=128  # Rank for LoRA configuration
-PRETRAINED_MODEL_PATH="../stable-diffusion-2-1" # Path to the pretrained model
-TRAIN_DATA_DIR="../dataset/nobel" # Path to the dataset directory
-OUTPUT_DIR="../output/fine_tuned_model_$LORA_RANK" # Directory to save the fine-tuned model
-LOG_DIR="../log/train_$LORA_RANK.log"
-VALIDATION_DIR="../test/figure/nobel_$LORA_RANK"
+LORA_RANK=8  # Rank for LoRA configuration
+DATA_SIZE=100 # Training data size
+PRETRAINED_MODEL_PATH="/disks/disk5/private/liyonghui/stable-diffusion-2-1" # Path to the pretrained model
+TRAIN_DATA_DIR="../dataset/train" # Path to the dataset directory
+OUTPUT_DIR="../output/finetuned_model_rank$LORA_RANK" # Directory to save the fine-tuned model
+LOG_DIR="../log/train_rank${LORA_RANK}_data${DATA_SIZE}.log"
+VALIDATION_DIR="../test/figure/model_rank$LORA_RANK/datasize_$DATA_SIZE"
 IMAGE_COLUMN="image" # Column name for image filenames in metadata
 CAPTION_COLUMN="text" # Column name for captions in metadata
 BATCH_SIZE=1 # Training batch size
-NUM_EPOCHS=60 # Number of training epochs
+NUM_EPOCHS=20 # Number of training epochs
 LEARNING_RATE=1e-4 # Learning rate for the optimizer
 LR_SCHEDULER="constant" # Type of learning rate scheduler
 LR_WARMUP_STEPS=0 # Warmup steps for the learning rate
 RESOLUTION=512 # Resolution for the input images
 SEED=42 # Random seed for reproducibility
-VALIDATION_PROMPT="Jack Ma wearing a baseball cap, with a serious expression, and a simple necklace, in the style of Nobel Laureate."
+VALIDATION_PROMPT="Abdominal CT scan shows a dilated appendix measuring 9mm in diameter, with surrounding fat stranding indicative of acute appendicitis."
 MIXED_PRECISION="fp16"
 NUM_VALIDATION_IMAGES=1
-CHECKPOINTING_STEPS=5000
+CHECKPOINTING_STEPS=1000
 
 # Execute the fine-tuning script
 python lora_train.py \
@@ -29,6 +30,7 @@ python lora_train.py \
   --image_column $IMAGE_COLUMN \
   --caption_column $CAPTION_COLUMN \
   --train_batch_size $BATCH_SIZE \
+  --max_train_samples $DATA_SIZE \
   --num_train_epochs $NUM_EPOCHS \
   --learning_rate $LEARNING_RATE \
   --lr_scheduler $LR_SCHEDULER \

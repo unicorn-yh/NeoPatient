@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-# Modified by Yunghwei Lai on 2025/01/04
+# Modified by Yunghwei Lai on 2025/05/15
 
 """Fine-tuning script for Stable Diffusion for text2image with support for LoRA."""
+
 
 import argparse
 import logging
@@ -39,6 +40,15 @@ from diffusers.utils import check_min_version, convert_state_dict_to_diffusers, 
 from diffusers.utils.hub_utils import load_or_create_model_card, populate_model_card
 from diffusers.utils.import_utils import is_xformers_available
 from diffusers.utils.torch_utils import is_compiled_module
+
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "6"  # set your own available cuda devices
+import torch
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("CUDA_VISIBLE_DEVICES:", os.environ["CUDA_VISIBLE_DEVICES"])
+print("Torch version:",torch.__version__)
+print("Cuda version:",torch.version.cuda)
+print("Cuda name:",torch.cuda.get_device_name(0))
 
 
 if is_wandb_available():
@@ -112,7 +122,7 @@ def parse_args():
     parser.add_argument("--max_train_samples",type=int,default=None,help=("For debugging purposes or quicker training, truncate the number of training examples to this ""value if set."),)
     parser.add_argument("--output_dir",type=str,default="sd-model-finetuned-lora",help="The output directory where the model predictions and checkpoints will be written.",)
     parser.add_argument("--log_dir",type=str,default="../log/train.log",help="The log directory where the training and validation process will be written.",)
-    parser.add_argument("--validation_dir",type=str,default="../test/figure/nobel",help="The directory which save the generated image during the training validation process.",)
+    parser.add_argument("--validation_dir",type=str,default="../test/figure/model",help="The directory which save the generated image during the training validation process.",)
     parser.add_argument("--cache_dir",type=str,default=None,help="The directory where the downloaded models and datasets will be stored.",)
     parser.add_argument("--seed", type=int, default=None, help="A seed for reproducible training.")
     parser.add_argument("--resolution",type=int,default=512,help=("The resolution for input images, all the images in the train/validation dataset will be resized to this"" resolution"),)
@@ -162,7 +172,7 @@ def parse_args():
     return args
 
 
-DATASET_NAME_MAPPING = {"../dataset/nobel": ("image", "text"),}
+DATASET_NAME_MAPPING = {"../dataset/train": ("image", "text"),}
 
 
 def main():
@@ -180,6 +190,7 @@ def main():
     # Disable AMP for MPS.
     if torch.backends.mps.is_available():
         accelerator.native_amp = False
+
 
     # Make one log on every process with the configuration for debugging.
     logging.basicConfig(
@@ -565,15 +576,15 @@ def main():
                     torch_dtype=weight_dtype,
                 )
                 images = log_validation(pipeline, args, accelerator, epoch)
-                prompt = args.validation_prompt.split(",")[0]
-                prompt = prompt.lower().replace(" ","_").replace(",","")
+                prompt = ' '.join(args.validation_prompt.split()[:3])
+                prompt = prompt.lower().replace(" ","_")
                 save_path = f"{args.validation_dir}/{prompt}"
                 os.makedirs(save_path, exist_ok=True)
                 print(f"--- EPOCH {epoch}")
                 for imgg in images:
                     index += 1
-                    imgg.save(f"{save_path}/nobel{index}_{epoch}.png")
-                    print(f"Successfully save {save_path}/nobel{index}_{epoch}.png")
+                    imgg.save(f"{save_path}/ctscan{index}_{epoch}.png")
+                    print(f"Successfully save {save_path}/ctscan{index}_{epoch}.png")
                     
                 del pipeline
                 torch.cuda.empty_cache()
