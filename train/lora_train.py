@@ -43,14 +43,13 @@ from diffusers.utils.torch_utils import is_compiled_module
 from PIL import Image, UnidentifiedImageError
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"  # set your own available cuda devices
+os.environ["CUDA_VISIBLE_DEVICES"] = "5"  # set your own available cuda devices
 import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("CUDA_VISIBLE_DEVICES:", os.environ["CUDA_VISIBLE_DEVICES"])
 print("Torch version:",torch.__version__)
 print("Cuda version:",torch.version.cuda)
 print("Cuda name:",torch.cuda.get_device_name(0))
-
 
 if is_wandb_available():
     import wandb
@@ -183,6 +182,8 @@ def main():
             "You cannot use both --report_to=wandb and --hub_token due to a security risk of exposing your token."
             " Please use `huggingface-cli login` to authenticate with the Hub."
         )
+    
+    print(f"Data size: {args.max_train_samples}")
 
     logging_dir = Path(args.output_dir, args.logging_dir)
     accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
