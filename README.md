@@ -7,7 +7,7 @@
 <div align="center" style="line-height: 1;">
   <a href="https://github.com/unicorn-yh/NeoPatient/blob/main/LICENSE">
     <img alt="MIT License"
-      src="https://img.shields.io/badge/License-MIT-brightgreen?logo=open-source-initiative&logoColor=white"/>
+      src="https://img.shields.io/badge/Code%20License-MIT-brightgreen?logo=open-source-initiative&logoColor=white"/>
   </a>
   <a href="https://pytorch.org/">
     <img alt="PyTorch"
