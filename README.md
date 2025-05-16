@@ -1,145 +1,155 @@
-<div align="center">
-  <img src="figure/NeoPatient.png" width="400em" ></img>
-  <p align="center">
-    <strong>Multimodal EHR Synthesis for Virtual Patients Using Medical Text-to-Image Generation</strong>
-  </p>
+<div align="center">   <img src="figure/NeoPatient.png" width="400em" />   <p align="center"><strong>🩺 NeoPatient: Generate Lifelike Virtual Patients with Multimodal Medical Generative Models</strong></p> </div>
+
+------
+
+
+
+<div align="center" style="line-height: 1;">
+  <a href="https://github.com/unicorn-yh/NeoPatient/blob/main/LICENSE">
+    <img alt="MIT License"
+      src="https://img.shields.io/badge/License-MIT-brightgreen?logo=open-source-initiative&logoColor=white"/>
+  </a>
+  <a href="https://pytorch.org/">
+    <img alt="PyTorch"
+      src="https://img.shields.io/badge/PyTorch-2.0+-%23EE4C2C?logo=pytorch&logoColor=white"/>
+  </a>
+  <a href="https://huggingface.co/stabilityai/stable-diffusion-2-1">
+    <img alt="Hugging Face"
+      src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Stability%20AI-ffc107?color=ffc107&logoColor=white"/>
+   </a>
 </div>
 
 
-## Dataset
 
-Download the preprocessed ROCO dataset from [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/c10a6bfc0fb74fd28cbd/), and put the dataset in `./dataset`, where the `./dataset/train/images` folder in the path contains the training images. The structure ensures compatibility with training pipelines. Each entry in `metadata.jsonl` contains the file path of the image and its corresponding descriptive caption.
-Train set contains 65420 images, test set contains 8176 images, and validation set contains 8172 images.
+## 🧬 Overview
 
-<br>
+**NeoPatient** is a powerful framework for generating synthetic virtual patient data using *text-to-image diffusion models* fine-tuned on radiology reports. It bridges the gap between textual medical descriptions and realistic imaging data to accelerate data availability for medical AI research.
 
-## Running locally with PyTorch
+> 💡 Fine-tune **Stable Diffusion v2.1** on the ROCO dataset using **LoRA**, and generate high-quality, medically coherent images from clinical prompts.
 
-Download **Stable Diffusion v2.1** from Hugging Face: **[Stable-Diffusion-2-1](https://huggingface.co/stabilityai/stable-diffusion-2-1)** (Alternative source: download the model from our [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/e2be80c926464046a661/))
+------
 
-The `lora_train.py` script shows how to fine-tune stable diffusion model using LoRA on your own dataset.
+## 📦 Dataset
 
-Before running the scripts, make sure to install the library's training dependencies:
+- Download the preprocessed **ROCO** dataset from [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/c10a6bfc0fb74fd28cbd/)
+
+- Place it in `./dataset/`
+
+- Structure:
+
+  ```
+  ./dataset/
+  ├── train/
+  │   └── images/
+  └── metadata.jsonl
+  ```
+
+- Dataset size:
+
+  - Train: 65,420 images
+  - Validation: 8,172 images
+  - Test: 8,176 images
+
+- Each line in `metadata.jsonl` contains:
+
+  - `"file_name"`: path to image
+  - `"text"`: corresponding medical caption
+
+------
+
+## 🚀 Quickstart
+
+### 1. Setup
 
 ```bash
 git clone https://github.com/unicorn-yh/NeoPatient
+cd NeoPatient
 pip install -r requirements.txt
 ```
 
-To speed up package downloading in China, you can use the PyPI mirror: 
+For faster downloads in China:
 
-```
+```bash
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-Start the training script:
+### 2. Download Pretrained Model
 
-```
-cd train
+Get **Stable Diffusion v2.1**:
+
+- From [Hugging Face](https://huggingface.co/stabilityai/stable-diffusion-2-1)
+- Or [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/d/e2be80c926464046a661/)
+
+------
+
+## 🎯 Fine-Tuning with LoRA
+
+Modify training hyperparameters in `train/run.sh`:
+
+```bash
 bash run.sh
 ```
 
-Change the available Cuda Device based on your own needs.
+Key flags:
 
-```
-os.environ["CUDA_VISIBLE_DEVICES"] = "6"  # set your own available cuda devices
+- `LORA_RANK`, `BATCH_SIZE`, `LEARNING_RATE`, `NUM_EPOCHS`
+- `VALIDATION_PROMPT`: example prompt for monitoring generation quality
+
+Train using single GPU with:
+
+```python
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 ```
 
-Run the inference script after finish training to generate the images from your finetuned model. (Make sure that you have set your all hyperparameters correctly)
+### Multi-GPU with `accelerate`
 
+```bash
+accelerate launch --multi_gpu python lora_train.py \
+  --pretrained_model_name_or_path $PRETRAINED_MODEL_PATH \
+  ...
 ```
+
+More: [Accelerate Docs](https://huggingface.co/docs/accelerate/basic_tutorials/launch)
+
+------
+
+## 🖼 Inference & Evaluation
+
+After training:
+
+```bash
 cd inference
 bash run_test.sh
 ```
 
-Run the evaluation script to calculate the scores of our predefined metrics (FID, CLIP Score,  Inception Score,  LPIPS).
+Evaluate with FID, CLIP Score, IS, LPIPS:
 
-```
+```bash
 cd evaluation
 bash run_eval.sh
 ```
 
+------
 
+## ⚙️ Hardware Tips
 
-<br>
+- Minimum: 1 GPU with 24GB memory (`gradient_checkpointing` + `fp16`)
+- Optimal: GPUs with ≥30GB for faster training and larger batch sizes
 
-### Hardware
+------
 
-With `gradient_checkpointing` and `mixed_precision` it should be possible to fine tune the model on a single 24GB GPU. For higher `batch_size` and faster training it's better to use GPUs with >30GB memory.
+## 📚 References
 
-***Note: Change the hyperparameters in the*** `run.sh` ***based on your own requirements.***
+1. Rombach et al. (CVPR 2022). *High-resolution image synthesis with latent diffusion models*
+2. von Platen et al. (Hugging Face). *Diffusers: State-of-the-art diffusion models*
 
-```sh
-#!/bin/bash
+------
 
-# Arguments for the fine-tuning script
-LORA_RANK=8  # Rank for LoRA configuration
-DATA_SIZE=40000 # Training data size
-MODEL_NAME="diffusion"
-PRETRAINED_MODEL_PATH="/disks/disk5/private/liyonghui/stable-diffusion-2-1" # Path to the pretrained model
-TRAIN_DATA_DIR="../dataset/train" # Path to the dataset directory
-OUTPUT_DIR="../output/$MODEL_NAME/modelckpt_rank${LORA_RANK}_data${DATA_SIZE}" # Directory to save the fine-tuned model
-LOG_DIR="../log/$MODEL_NAME/train_rank${LORA_RANK}_data${DATA_SIZE}.log"
-VALIDATION_DIR="../valid_figure/$MODEL_NAME/model_rank$LORA_RANK/datasize_$DATA_SIZE"
-IMAGE_COLUMN="image" # Column name for image filenames in metadata
-CAPTION_COLUMN="text" # Column name for captions in metadata
-BATCH_SIZE=1 # Training batch size
-NUM_EPOCHS=20 # Number of training epochs
-LEARNING_RATE=1e-4 # Learning rate for the optimizer
-LR_SCHEDULER="constant" # Type of learning rate scheduler
-LR_WARMUP_STEPS=0 # Warmup steps for the learning rate
-RESOLUTION=512 # Resolution for the input images
-SEED=42 # Random seed for reproducibility
-VALIDATION_PROMPT="Abdominal CT scan shows a dilated appendix measuring 9mm in diameter, with surrounding fat stranding indicative of acute appendicitis."
-MIXED_PRECISION="fp16"
-NUM_VALIDATION_IMAGES=1
-CHECKPOINTING_STEPS=5000
-```
+## 🧠 Why Use NeoPatient?
 
+- 🔬 Enables multimodal medical data generation
+- 🏥 Empowers low-resource settings with synthetic EHRs
+- 🤖 Boosts training data for AI in radiology, safely and ethically
 
-
-Once the training is finished the model will be saved in the `output_dir` specified in the command. 
-
-<br>
-
-###  Training with multiple GPUs
-
-`accelerate` allows for seamless multi-GPU training. Follow the instructions [here](https://huggingface.co/docs/accelerate/basic_tutorials/launch) for running distributed training with `accelerate`. Here is an example command in `run.sh`:
-
-```sh
-# Execute the fine-tuning script
-accelerate launch --multi_gpu python lora_train.py \
-  --pretrained_model_name_or_path $PRETRAINED_MODEL_PATH \
-  --train_data_dir $TRAIN_DATA_DIR \
-  --output_dir $OUTPUT_DIR \
-  --image_column $IMAGE_COLUMN \
-  --caption_column $CAPTION_COLUMN \
-  --train_batch_size $BATCH_SIZE \
-  --max_train_samples $DATA_SIZE \
-  --num_train_epochs $NUM_EPOCHS \
-  --learning_rate $LEARNING_RATE \
-  --lr_scheduler $LR_SCHEDULER \
-  --lr_warmup_steps $LR_WARMUP_STEPS \
-  --checkpointing_steps $CHECKPOINTING_STEPS \
-  --mixed_precision $MIXED_PRECISION \
-  --resolution $RESOLUTION \
-  --rank $LORA_RANK \
-  --seed $SEED \
-  --log_dir $LOG_DIR \
-  --num_validation_images $NUM_VALIDATION_IMAGES \
-  --validation_prompt "$VALIDATION_PROMPT" \
-  --validation_dir $VALIDATION_DIR 
-```
-
-<br>
-
-
-
-#### References:
-
-[1] Rombach, R., Blattmann, A., Lorenz, D., Esser, P., & Ommer, B. (2022). High-resolution image synthesis with latent diffusion models. In *Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)* (pp. 10684–10695).
-
-[2] von Platen, P., Patil, S., Lozhkov, A., Cuenca, P., Lambert, N., Rasul, K., Davaadorj, M., Nair, D., Paul, S., Berman, W., Xu, Y., Liu, S., & Wolf, T. (2022). *Diffusers: State-of-the-art diffusion models* [GitHub repository]. GitHub. https://github.com/huggingface/diffusers
-
-
+------
 
