@@ -33,13 +33,9 @@ To speed up package downloading in China, you can use the PyPI mirror:
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-And initialize an [🤗Accelerate](https://github.com/huggingface/accelerate/) environment with:
+Note also that we use PEFT library as backend for LoRA training, make sure to have `peft>=0.6.0` installed in your environment. 
 
-```bash
-accelerate config
-```
-
-Note also that we use PEFT library as backend for LoRA training, make sure to have `peft>=0.6.0` installed in your environment.
+Change the available Cuda Device based on your own needs.
 
 ```
 os.environ["CUDA_VISIBLE_DEVICES"] = "6"  # set your own available cuda devices

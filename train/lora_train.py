@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-# Modified by Yunghwei Lai on 2025/05/15
+# Modified by Yunghwei Lai on 2025/01/04
 
 """Fine-tuning script for Stable Diffusion for text2image with support for LoRA."""
 
@@ -40,9 +40,10 @@ from diffusers.utils import check_min_version, convert_state_dict_to_diffusers, 
 from diffusers.utils.hub_utils import load_or_create_model_card, populate_model_card
 from diffusers.utils.import_utils import is_xformers_available
 from diffusers.utils.torch_utils import is_compiled_module
+from PIL import Image, UnidentifiedImageError
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "6"  # set your own available cuda devices
+os.environ["CUDA_VISIBLE_DEVICES"] = "7"  # set your own available cuda devices
 import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("CUDA_VISIBLE_DEVICES:", os.environ["CUDA_VISIBLE_DEVICES"])
@@ -191,8 +192,10 @@ def main():
     if torch.backends.mps.is_available():
         accelerator.native_amp = False
 
-
     # Make one log on every process with the configuration for debugging.
+    log_dir = args.log_dir.split("/train")[0]
+    if log_dir is not None:
+        os.makedirs(log_dir, exist_ok=True)
     logging.basicConfig(
         filename=args.log_dir,
         filemode="w",
@@ -580,10 +583,12 @@ def main():
                 prompt = prompt.lower().replace(" ","_")
                 save_path = f"{args.validation_dir}/{prompt}"
                 os.makedirs(save_path, exist_ok=True)
+                logger.info(f"--- EPOCH {epoch}")
                 print(f"--- EPOCH {epoch}")
                 for imgg in images:
                     index += 1
                     imgg.save(f"{save_path}/ctscan{index}_{epoch}.png")
+                    logger.info(f"Successfully save {save_path}/ctscan{index}_{epoch}.png")
                     print(f"Successfully save {save_path}/ctscan{index}_{epoch}.png")
                     
                 del pipeline
@@ -611,6 +616,8 @@ def main():
             upload_folder(repo_id=repo_id,folder_path=args.output_dir,commit_message="End of training",ignore_patterns=["step_*", "epoch_*"],)
 
     accelerator.end_training()
+    logger.info(f"Model ckpts saved to {args.output_dir}.")
+    logger.info(f"Validation images saved to {args.validation_dir}.")
 
 
 if __name__ == "__main__":

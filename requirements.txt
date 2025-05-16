@@ -10,3 +10,6 @@ Jinja2
 peft==0.7.0
 diffusers
 numpy<2
+openai-clip
+pytorch-fid
+lpips

@@ -2,12 +2,13 @@
 
 # Arguments for the fine-tuning script
 LORA_RANK=8  # Rank for LoRA configuration
-DATA_SIZE=8000 # Training data size
+DATA_SIZE=20 # Training data size
+MODEL_NAME="diffusion"
 PRETRAINED_MODEL_PATH="/disks/disk5/private/liyonghui/stable-diffusion-2-1" # Path to the pretrained model
 TRAIN_DATA_DIR="../dataset/train" # Path to the dataset directory
-OUTPUT_DIR="../output/finetuned_model_rank$LORA_RANK" # Directory to save the fine-tuned model
-LOG_DIR="../log/train_rank${LORA_RANK}_data${DATA_SIZE}.log"
-VALIDATION_DIR="../test/figure/model_rank$LORA_RANK/datasize_$DATA_SIZE"
+OUTPUT_DIR="../output/$MODEL_NAME/modelckpt_rank${LORA_RANK}_data${DATA_SIZE}" # Directory to save the fine-tuned model
+LOG_DIR="../log/$MODEL_NAME/train_rank${LORA_RANK}_data${DATA_SIZE}.log"
+VALIDATION_DIR="../valid_figure/$MODEL_NAME/model_rank$LORA_RANK/datasize_$DATA_SIZE"
 IMAGE_COLUMN="image" # Column name for image filenames in metadata
 CAPTION_COLUMN="text" # Column name for captions in metadata
 BATCH_SIZE=1 # Training batch size

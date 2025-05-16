@@ -63,10 +63,11 @@ def calculate_inception_score(image_folder, batch_size=1, splits=3):
     return np.mean(split_scores), np.std(split_scores)
 
 # Paths
-RANK = 128
-data_path = f"../test/figure/nobel_{RANK}_inference"
-new_path = "../test/figure/combined_images"
-real_images_path = "../dataset/nobel/images"
+MODEL = "diffusion"
+RANK = "dalle"
+data_path = f"../inference/figure/{MODEL}/model_rank{RANK}"
+new_path = f"../inference/figure/{MODEL}/combined_images"
+real_images_path = "../dataset/train/images"
 
 # Combine and process generated images
 combine_generated_data(data_path, new_path)
