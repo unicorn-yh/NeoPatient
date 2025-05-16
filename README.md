@@ -23,7 +23,6 @@ Before running the scripts, make sure to install the library's training dependen
 
 ```bash
 git clone https://github.com/unicorn-yh/NeoPatient
-cd train
 pip install -r requirements.txt
 ```
 
@@ -33,12 +32,31 @@ To speed up package downloading in China, you can use the PyPI mirror:
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-Note also that we use PEFT library as backend for LoRA training, make sure to have `peft>=0.6.0` installed in your environment. 
+Start the training script:
+
+```
+cd train
+bash run.sh
+```
 
 Change the available Cuda Device based on your own needs.
 
 ```
 os.environ["CUDA_VISIBLE_DEVICES"] = "6"  # set your own available cuda devices
+```
+
+Run the inference script after finish training to generate the images from your finetuned model. (Make sure that you have set your all hyperparameters correctly)
+
+```
+cd inference
+bash run_test.sh
+```
+
+Run the evaluation script to calculate the scores of our predefined metrics (FID, CLIP Score,  Inception Score,  LPIPS).
+
+```
+cd evaluation
+bash run_eval.sh
 ```
 
 
