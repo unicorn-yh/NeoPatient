@@ -151,5 +151,3 @@ bash run_eval.sh
 - 🏥 Empowers low-resource settings with synthetic EHRs
 - 🤖 Boosts training data for AI in radiology, safely and ethically
 
-------
-
